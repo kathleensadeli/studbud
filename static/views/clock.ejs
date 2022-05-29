@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/stylesheets/style.css" type="text/css">
+    <title>Clock</title>
+</head>
+
+<body>
+    <section class="wrapper">
+        <%- include('./partials/menu'); %>
+        <section class="content-wrapper">
+            <header>
+                <div>
+                    <h1>CLOCK</h1>
+                </div>
+
+            </header>
+
+            <section class="content clock">
+                <div class="clockType">
+                    <button id="timer" class="secondary2 bold">TIMER</button>
+                    <button id="stopwatch" class="secondary5 bold">STOPWATCH</button>
+                </div>
+                <div class="timerDisplay bold">
+                    00 : 00 
+                </div>
+                <div class="clock-controls bold">
+                    <div class="config">
+                        <img id="config" width="50px" height="50px" src="static/images/setting.png"></button>
+                        <div id="popup-config"class="clock-configs secondary5">
+                            <div>
+                                <div class="pomodoro-label">Pomodoro</div>
+                                <div class="pomodoro-input">
+                                    <input type="number" id="pomodoroInput" required class="bold" onfocusout="setPomodoroTIme()">
+                                    <div>min</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="pomodoro-label">Short Break</div>
+                                <div class="pomodoro-input">
+                                    <input type="number" id="shortBreakInput" required class="bold" onfocusout="setPomodoroTIme()">
+                                    <div >min</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="pomodoro-label">Long Break</div>
+                                <div class="pomodoro-input">
+                                    <input type="number" id="longBreakInput" required class="bold" onfocusout="setPomodoroTIme()">
+                                    <div>min</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="startTimer" class="secondary1 bold">Start</button>
+                    <img id="resetTimer" width="50px" height="50px" src="static/images/reset.png"></button>
+                </div>
+                <div class="pomodoro-nav">
+                    <ul>
+                        <li id="pomodoro" class="underline bold">Pomodoro</li>
+                        <li id="shortBreak" class="bold">Short Break</li>
+                        <li id="longBreak" class="bold">Long Break</li>
+                    </ul>
+                </div>
+            </section>
+        </section>
+    </section>
+
+
+
+    <script>
+        let type = "timer";
+        let currentState="pomodoro";
+        let buttonState="start"
+        let [seconds, minutes] = [0, 0];
+        let timerRef = document.querySelector('.timerDisplay');
+        let int = null;
+        let toggle = false;
+
+        const startTimer = document.getElementById('startTimer');
+        const timer = document.getElementById('timer');
+        const stopwatch = document.getElementById('stopwatch');
+        const containerPomodoro = document.getElementsByClassName('pomodoro-nav');
+        const pomodoro = document.getElementById('pomodoro');
+        const shortBreak = document.getElementById('shortBreak');
+        const longBreak = document.getElementById('longBreak');
+        const config = document.getElementById('config');
+        const reset = document.getElementById('resetTimer');
+        const popupConfig = document.getElementById('popup-config');
+        const pomodoroInput = document.getElementById('pomodoroInput');
+        const shortBreakInput = document.getElementById('shortBreakInput');
+        const longBreakInput = document.getElementById('longBreakInput');
+
+        //set Default Value
+        const pa = {
+            pomodoro: 25,
+            shortBreak: 5,
+            longBreak: 15,
+            longBreakInterval: 4,
+            sessions: 0,
+        };
+
+        
+        pomodoroInput.value=pa.pomodoro;
+        shortBreakInput.value=pa.shortBreak;
+        longBreakInput.value=pa.longBreak;
+        setDisplayTimer(pa.pomodoro,0);
+
+
+        //Click Listener
+        timer.addEventListener('click', ()=>{
+            timer.classList.remove("secondary5");
+            timer.classList.add("secondary2");
+            stopwatch.classList.remove("secondary2");
+            stopwatch.classList.add("secondary5");
+            containerPomodoro[0].style.display = 'block';
+            config.style.display='block';
+            type="timer";
+            setDisplayTimer(pa.pomodoro,0);
+        });
+
+        stopwatch.addEventListener('click', ()=>{
+            timer.classList.remove("secondary2");
+            timer.classList.add("secondary5");
+            stopwatch.classList.remove("secondary5");
+            stopwatch.classList.add("secondary2");
+            containerPomodoro[0].style.display = 'none';
+            config.style.display = 'none';
+            type="stopwatch";
+            setDisplayTimer(0,0);
+        });
+
+        pomodoro.addEventListener('click', ()=>{
+            switchState("pomodoro");
+        });
+
+        shortBreak.addEventListener('click', ()=>{
+            switchState("shortBreak");
+        });
+
+        longBreak.addEventListener('click', ()=>{
+            switchState("longBreak");
+        });
+
+        startTimer.addEventListener('click', () => {
+            if(buttonState=='start'){
+                if (int !== null) {
+                    clearInterval(int);
+                }
+                buttonState='stop';
+                startTimer.innerHTML="Stop"
+                int = setInterval(displayTimer, 1000);
+                
+            }else{
+                clearInterval(int);
+                buttonState='start';
+                startTimer.innerHTML="Start"
+            }
+        });
+
+        config.addEventListener('click', () => {
+            if(toggle){
+                toggle=false;
+                popupConfig.style.display='none';
+            }
+            else{
+                toggle=true;
+                popupConfig.style.display='block';
+            }
+            setPomodoroTIme();
+            setDisplayTimer(pa.pomodoro,0);
+            currentState="pomodoro";
+            switchState(currentState);
+            
+        });
+
+        reset.addEventListener('click', () => {
+            console.log("reset");
+            clearInterval(int);
+            if(type=='timer'){
+                setDisplayTimer(pa.pomodoro,0);
+                currentState="pomodoro";
+                switchState(currentState);
+            }else{
+                setDisplayTimer(0,0);
+            }
+                
+        });
+
+        function displayTimer() {
+            if(type=='timer'){
+                seconds--; 
+                if(seconds==0||seconds<0){
+                    if(minutes==0&&seconds==0&&currentState=="pomodoro"){
+                        if(pa.sessions==pa.longBreakInterval){
+                            switchState("longBreak");
+                            pa.sessions=0;
+                        }else{
+                            pa.sessions++;
+                            switchState("shortBreak");
+                        }
+                    }else if(minutes==0&&seconds==0&&currentState!="pomodoro"){
+                        switchState("pomodoro");
+                    }
+                    seconds=59;
+                    minutes--;
+                }
+                
+            }else{
+                seconds++;
+                if (seconds == 60) {
+                    seconds = 0;
+                    minutes++;
+                    if (minutes == 60) {
+                        minutes = 0;
+                    }
+                } 
+            }
+            
+            let m = minutes < 10 ? "0" + minutes : minutes;
+            let s = seconds < 10 ? "0" + seconds : seconds;
+
+            timerRef.innerHTML = ` ${m} : ${s} `;
+        }
+
+        //Set Starting display Timer if button is clicked
+        function setDisplayTimer(minute,second){
+            [seconds, minutes] = [second, minute];
+            let m = minute < 10 ? "0" + minute : minute;
+            let s = second < 10 ? "0" + second : second;
+            timerRef.innerHTML = ` ${m} : ${s} `;
+        }
+
+        //Switch State and adding underline for active state of pomodoro , short break and long break
+        function switchState(state){
+            longBreak.classList.remove("underline");
+            shortBreak.classList.remove("underline");
+            pomodoro.classList.remove("underline");
+            if(state=="pomodoro") {
+                pomodoro.classList.add("underline");
+                setDisplayTimer(pa.pomodoro,0);
+                currentState=state;
+            }else if(state=="shortBreak"){
+                shortBreak.classList.add("underline");
+                setDisplayTimer(pa.shortBreak,0);
+                currentState=state;
+            }else{
+                longBreak.classList.add("underline");
+                setDisplayTimer(pa.longBreak,0);
+                currentState=state;
+            }
+            
+        }
+
+        //Set Config Pomodoro Time 
+        function setPomodoroTIme(){
+            pa.pomodoro=pomodoroInput.value;
+            pa.shortBreak=shortBreakInput.value;
+            pa.longBreak=longBreakInput.value;
+        }
+
+
+    </script>
+</body>
+
+</html>

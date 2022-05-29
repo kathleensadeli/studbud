@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/stylesheets/style.css" type="text/css">
+    <title>Task List</title>
+</head>
+
+<body>
+    <section class="wrapper">
+        <%- include('./partials/menu'); %>
+        <section class="content-wrapper">
+            <header>
+                <div>
+                    <h1>TASK LIST</h1>
+                </div>
+                <div>
+                    <button class="modal-open secondary3" data-id="task-modal"><span>+</span> Add Task</button>
+                    <button class="modal-open secondary3" data-id="column-modal"><span>+</span> Add Column</button>
+                </div>
+            </header>
+
+            <section class="content">
+
+            </section>
+        </section>
+    </section>
+
+
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal" role="dialog" tabindex="-1">
+        <div class="model-inner">
+            <div class="modal-header">
+                <h3>Add Task</h3>
+                <button class="modal-close" data-id="column-modal" aria-label="Close">
+                    &times;
+                </button>
+            </div>
+            <form method="post" action="/task">
+                <div class='form-control'>
+                    <label for="taskName">Name</label>
+                    <input id='taskName' placeholder="Task Name" type='text' name="task" required>
+                </div>
+                <div class='form-control'>
+                    <label for="column">Column</label>
+                    <select id='column' name="column">
+                        <option value="">
+                            --Choose--
+                        </option>
+                        <% columns.forEach(function(detail){ %>
+                            <option value="<%= detail._id %>"><%= detail.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class='form-control'>
+                    <label for="dueDate">Due Date</label>
+                    <input id="dueDate" type="date" name="dueDate" onfocus="(this.type='date')">
+                </div>
+                <div class='form-control'>
+                    <label for="estimatedTime">Estimated Time</label>
+                    <div class="time">
+                        <input id="hour" type="number" name="hour" required min="0" max="24" value="0">
+                        <input id="minute" type="number" name="minute" required min="1" max="60" value="0">
+                    </div>
+                </div>
+                <div class='form-control'>
+                    <label>Priority</label>
+                    <div class="radio">
+                        <input checked='' id="radio-low" name="priority" type="radio" value="LOW">
+                        <label for="radio-low">LOW</label>
+                        <input checked='' id="radio-medium" name="priority" type="radio" value="MEDIUM">
+                        <label for="radio-medium">MEDIUM</label>
+                        <input checked='' id="radio-high" name="priority" type="radio" value="HIGH">
+                        <label for="radio-high">HIGH</label>
+                    </div>
+                </div>
+                <div class="form-control form-button">
+                    <button type="button"  class="model-close" data-id="column-modal" aria-label="Close">
+                        Cancel
+                    </button> 
+                    <button type="submit" >
+                        Simpan
+                    </button>    
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Column Modal -->
+    <div id="column-modal" class="modal" role="dialog" tabindex="-1">
+        <div class="model-inner">
+            <div class="modal-header">
+                <h3>Add Column</h3>
+                <button class="modal-close" data-id="column-modal" aria-label="Close">
+                    &times;
+                </button>
+            </div>
+            <form method="post" action="/column">
+                <div class='form-control'>
+                    <label for="columnName">Column Name</label>
+                    <input id='columnName' placeholder="Column Name" type='text' name="column">
+                </div>
+                <div class="form-control form-button">
+                    <button type="button" id="modal-close" data-id="column-modal" aria-label="Close">
+                        Cancel
+                    </button> 
+                    <button type="submit">
+                        Simpan
+                    </button>    
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        //Open Modal
+        let modal;
+        document.addEventListener("click", (e) => {
+            console.log(e.target);
+            if (e.target.className === "modal-open secondary3") {
+                modal = document.getElementById(e.target.dataset.id);
+                openModal(modal);
+            } else if (e.target.className === "modal-close") {
+                closeModal(modal);
+            }else if(e.target.id === "modal-close"){
+                closeModal(modal);
+            } else {
+                return;
+            }
+        });
+
+        const openModal = (modal) => {
+            document.body.style.overflow = "hidden";
+            modal.setAttribute("open", "true");
+            document.addEventListener("keydown", escClose);
+            let overlay = document.createElement("div");
+            overlay.id = "modal-overlay";
+            document.body.appendChild(overlay);
+        };
+
+
+        //Close Modal
+        const closeModal = (modal) => {
+            document.body.style.overflow = "auto";
+            modal.removeAttribute("open");
+            document.removeEventListener("keydown", escClose);
+            document.body.removeChild(document.getElementById("modal-overlay"));
+        };
+
+        //Close Modal using keyboard
+        const escClose = (e) => {
+            if (e.keyCode == 27) {
+                closeModal();
+            }
+        };
+
+    </script>
+</body>
+
+</html>
