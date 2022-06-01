@@ -2,11 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/stylesheets/style.css" type="text/css">
-    <title>Task List</title>
+    <%- include('./partials/head') %>
 </head>
 
 <body>
@@ -23,8 +19,60 @@
                 </div>
             </header>
 
-            <section class="content">
-
+            <section class="content task">
+                <% columns.forEach(function(column) { %>
+                    <% var count=0 %>
+                    <% todoTasks.forEach(function(todo) { %>
+                        <% if(column._id.toString() == todo.column.toString()){ %>
+                            <% count++ %>
+                        <% } %>
+                    <% }); %>
+                    <div class="column-cards secondary5">
+                        <div class="column-header">
+                            <h2><%= column.name %></h2>
+                            <div class="column-count secondary2 bold"><%= count %></div>
+                        </div>
+                        <% todoTasks.forEach(function(todo) { %>
+                            <% if(column._id.toString() == todo.column.toString()){ %>
+                                <div class="task-cards primary2" onclick="edit(this)">
+                                    <!-- Storing Data for Edit -->
+                                    <input type="hidden" style="display: none;" id="editId" value="<%= todo._id %>"></input>
+                                    <input type="hidden" style="display: none;" id="editTask" value="<%= todo.task %>"></input>
+                                    <input type="hidden" style="display: none;" id="editPriority" value="<%= todo.priority %>"></input>
+                                    <input type="calendar" style="display: none;" id="editDueDate" value="<%= todo.dueDate %>"></input>
+                                    <input type="text" style="display: none;" id="estimatedTime" value="<%= todo.estimatedTime %>"></input>
+                                    <input type="hidden" style="display: none;" id="editColumn" value="<%= todo.column %>"></input>
+                                    <h3><%= todo.task %></h3>
+                                    <% if(todo.priority=="HIGH"){ %>
+                                        <div class="priority bold priority-high"><%= todo.priority %></div>    
+                                    <% } else if(todo.priority=="MEDIUM"){%>
+                                        <div class="priority bold priority-medium"><%= todo.priority %></div>    
+                                    <% } else{%>
+                                        <div class="priority bold priority-low"><%= todo.priority %></div>    
+                                    <% } %>
+                                    <div class="estimated-time">
+                                        <div>
+                                            <i class="fa fa-regular fa-calendar"></i>
+                                            <% var date = new Date(todo.dueDate) %>
+                                            <% dateNow = date.toLocaleDateString(undefined, {day:'2-digit'}) +' '+ date.toLocaleDateString(undefined, {month:'long'}) %>
+                                            <%= dateNow %>
+                                        </div>
+                                        <div>
+                                            <i class="fa fa-regular fa-clock"></i>
+                                        <% for(var i=0; i<todo.estimatedTime.split(":").length;i++) { %>
+                                            <% if(i==0){ %>
+                                                    <%= todo.estimatedTime.split(":")[i] %> h
+                                            <% } else{%>
+                                                    <%= todo.estimatedTime.split(":")[i] %> min
+                                            <% } %>
+                                        <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                        <% }); %>
+                    </div>
+                  <% }); %>
             </section>
         </section>
     </section>
@@ -35,7 +83,7 @@
         <div class="model-inner">
             <div class="modal-header">
                 <h3>Add Task</h3>
-                <button class="modal-close" data-id="column-modal" aria-label="Close">
+                <button class="modal-close" data-id="task-modal" aria-label="Close">
                     &times;
                 </button>
             </div>
@@ -78,11 +126,71 @@
                     </div>
                 </div>
                 <div class="form-control form-button">
-                    <button type="button"  class="model-close" data-id="column-modal" aria-label="Close">
+                    <button type="button"  id="modal-close" data-id="task-modal" aria-label="Close">
                         Cancel
                     </button> 
-                    <button type="submit" >
-                        Simpan
+                    <button type="submit" class="secondary3">
+                        Save
+                    </button>    
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="modal" role="dialog" tabindex="-1">
+        <div class="model-inner">
+            <div class="modal-header">
+                <h3>Edit Task</h3>
+                <button class="modal-close" data-id="edit-modal" aria-label="Close">
+                    &times;
+                </button>
+            </div>
+            <form method="post" action="/edit-task">
+                <div class='form-control'>
+                    <label for="taskName">Name</label>
+                    <input id='taskName' placeholder="Task Name" type='text' name="task" required>
+                </div>
+                <div class='form-control'>
+                    <label for="column">Column</label>
+                    <select id='column' name="column">
+                        <option value="">
+                            --Choose--
+                        </option>
+                        <% columns.forEach(function(detail){ %>
+                            <option value="<%= detail._id %>"><%= detail.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class='form-control'>
+                    <label for="dueDate">Due Date</label>
+                    <input id="dueDate" type="date" name="dueDate" onfocus="(this.type='date')">
+                </div>
+                <div class='form-control'>
+                    <label for="estimatedTime">Estimated Time</label>
+                    <div class="time">
+                        <input id="hour" type="number" name="hour" required min="0" max="24" value="0">
+                        <input id="minute" type="number" name="minute" required min="1" max="60" value="0">
+                    </div>
+                </div>
+                <div class='form-control'>
+                    <label>Priority</label>
+                    <div class="radio">
+                        <input checked='' id="radio-low-edit" name="priority" type="radio" value="LOW">
+                        <label for="radio-low-edit">LOW</label>
+                        <input checked='' id="radio-medium-edit" name="priority" type="radio" value="MEDIUM">
+                        <label for="radio-medium-edit" >MEDIUM</label>
+                        <input checked='' id="radio-high-edit" name="priority" type="radio" value="HIGH">
+                        <label for="radio-high-edit" >HIGH</label>
+                    </div>
+                    <input id="id" type="hidden" name="id">
+                </div>
+                <div class="form-control form-button">
+                    <button type="button"  id="modal-close" data-id="edit-modal" aria-label="Close">
+                        Cancel
+                    </button> 
+                    <button type="submit" class="secondary3">
+                        Save
                     </button>    
                 </div>
             </form>
@@ -107,8 +215,8 @@
                     <button type="button" id="modal-close" data-id="column-modal" aria-label="Close">
                         Cancel
                     </button> 
-                    <button type="submit">
-                        Simpan
+                    <button type="submit" class="secondary3">
+                        Save
                     </button>    
                 </div>
             </form>
@@ -119,7 +227,6 @@
         //Open Modal
         let modal;
         document.addEventListener("click", (e) => {
-            console.log(e.target);
             if (e.target.className === "modal-open secondary3") {
                 modal = document.getElementById(e.target.dataset.id);
                 openModal(modal);
@@ -156,6 +263,41 @@
                 closeModal();
             }
         };
+
+        function edit(e){
+            let task = $("#edit-modal #taskName");
+            let column = $("#edit-modal #column");
+            let dueDate = $("#edit-modal #dueDate");
+            let hour = $("#edit-modal #hour");
+            let minute = $("#edit-modal #minute");
+            let rLow = $("#edit-modal #radio-low-edit");
+            let rMed = $("#edit-modal #radio-medium-edit");
+            let rHigh = $("#edit-modal #radio-high-edit");
+            let id = $("#edit-modal #id");
+
+            $(e).children("input").each(function(key,value){
+                if(key==0)id.val($(value).val());
+                else if(key==1)task.val($(value).val());
+                else if(key==2){
+                    let radio = $(value).val();
+                    if(radio=="LOW")rLow.prop("checked", true);
+                    else if(radio=="MEDIUM") rMed.prop("checked", true);
+                    else rHigh.prop("checked", true);
+                }else if(key==3){
+                    let date = new Date($(value).val()).toISOString().split('T')[0];
+                    dueDate.val(date);
+                }else if(key==4){
+                    let time = $(value).val().split(":");
+                    hour.val(time[0]);
+                    minute.val(time[1]);
+                }
+                else if(key==5) column.val($(value).val());
+            });
+            
+            modal = document.getElementById("edit-modal");
+            openModal(modal);
+
+        }
 
     </script>
 </body>

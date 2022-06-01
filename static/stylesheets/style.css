@@ -50,9 +50,11 @@ body {
     display: flex;
     height: 100vh;
 }
+
+/* Menu Style */
 .menu{
     height: 100%;
-    width: 20%;
+    width: 20vw;
     font-size: 25px;
     padding-top: 5vh;
     box-shadow: 1px 1px 3px #000;
@@ -74,10 +76,12 @@ body {
   margin: 5px;
 }
 
+/* Content */
 .content-wrapper{
     height: 100vh;
     width: 100%;
 }
+
 h1{
     font-weight: 900;
     font-size: 4em;
@@ -107,7 +111,7 @@ button span{
     box-sizing: border-box;
 }
 
-
+/* Header */
 .content-wrapper header{
     background-color: #FFFFFF;
     height: 20vh;
@@ -117,12 +121,101 @@ button span{
     padding-top: 1.5em;
 }
 
-.modal-open{
-    border-radius: 50px;
-    padding: 1em 2em;
-    font-weight: 700;
+.content{
+  text-align: center;
+  transform: translateY(15vh);
 }
 
+/* Task */
+.task{
+  transform: translateY(5vh);
+  height: 75vh;
+  width: 85vw;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.column-cards{
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 20vw;
+  margin: 0 2%;
+  padding: 20px;
+  display: block;
+  height: 70vh;
+  overflow-y: scroll;
+  scrollbar-width: 1px;
+}
+
+.column-header{
+  display: flex;
+  justify-content: space-between;
+}
+
+.column-count{
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+}
+
+.column-count::before{
+  content:'';
+  display:inline-block;
+  height:100%;
+  vertical-align:middle;
+  width:0px;
+}
+.task-cards{
+  border-radius: 5px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  padding: 10px;
+  height: 100px;
+  justify-content: left;
+  text-align: left;
+  position: relative;
+}
+
+.priority{
+  font-size: 0.8em;
+  display: inline-block;
+  padding: 0px 10px;
+  border-radius: 5px;
+}
+
+.priority-high{
+  color:#EE3333;
+  background-color: #F5DFDD;
+}
+
+.priority-medium{
+  color:#EE751D;
+  background-color: #FFF1E2;
+}
+
+.priority-low{
+  color: #FFE695;
+  background-color: #FFF8DD;
+}
+
+.estimated-time{
+  position: absolute;
+  display: flex;
+  justify-content: right;
+  color: #888;
+  font-size: 0.8rem;
+  bottom:0;
+  right:0;
+  margin: 5px;
+  width: 100%;
+}
+
+.estimated-time div{
+  margin-left: 10px;
+}
 /* Modal */
 .modal {
   display: none;
@@ -133,6 +226,13 @@ button span{
   width: 100%;
   height: 100%;
 }
+
+.modal-open{
+  border-radius: 50px;
+  padding: 1em 2em;
+  font-weight: 700;
+}
+
 .modal[open] {
   display: flex;
   position: fixed;
@@ -148,6 +248,10 @@ button span{
   max-width: 600px;
   padding: 2em;
   margin: auto;
+}
+
+.model-inner button{
+  font-weight: 700;
 }
 .modal-header {
   display: flex;
@@ -179,7 +283,7 @@ form {
   margin: 10px 0;
 }
 form input,
-select {
+select, textarea {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   height: 38px;
@@ -191,7 +295,7 @@ form label {
   margin-bottom: 5px;
 }
 .form-control input[type="radio"]:checked + label {
-  background: #f7b1ab;
+  background: #42E4CE;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 3px 3px 3px #ccc;
 }
@@ -249,13 +353,80 @@ form label {
     transform: translateY(0px);
 }
 
+/* BookMark Page Style */
+.resources{
+  transform: translateY(5vh);
+  height: 75vh;
+  width: 85vw;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.group-cards{
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 98%;
+  margin: 0 2%;
+  padding: 20px;
+  display: inline-block;
+  height: 30vh;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scrollbar-width: 1px;
+}
+
+.group-header{
+  display: flex;
+}
+.resources-cards-container{
+  display: flex;
+}
+
+.resources-cards{
+  flex-grow: 0;
+  flex-shrink: 0;
+  border-radius: 5px;
+  margin: 10px 10px;
+  box-sizing: border-box;
+  padding: 10px;
+  height: 16vh;
+  width: 300px;
+  text-align: left;
+  position: relative;
+}
+
+.resource-content{
+  padding: 10px 0px;
+  color: #888;
+  font-size: 0.8em;
+}
+
+.resource-url{
+  display: flex;
+  color: #888;
+  font-size: 0.8rem;
+  width: 100%;
+  z-index: 10000;
+  position: absolute;
+  bottom: 0;
+  left:0;
+  margin: 5px 10px;
+}
+
+.resource-links{
+  padding: 5px 10px;
+}
+
+.resource-url div{
+  padding:0px 5px;
+}
 
 
 /* Clock Page Style */
-.content{
-  text-align: center;
-  transform: translateY(15vh);
-}
+
 
 .clock > *{
   font-size: 30px;
@@ -339,3 +510,120 @@ form label {
 .timerDisplay{
   font-size: 100px;
 }
+
+
+/* Playlist Style */
+/* Using flex with the column direction to
+        align items in a vertical direction */
+        .player {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+          padding:15px 0px;
+      }
+
+      .details {
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+          justify-content: center;
+          padding:15px 0px;
+      }
+
+      .track-song{
+          display: flex;
+          flex-direction: column;
+      }
+
+      .track-art {
+          width: 80%;
+          background-size: cover;
+          background-position: center;
+      }
+
+      /* Changing the font sizes to suitable ones */
+      .track-name {
+          font-size: 1rem;
+      }
+
+      .track-artist {
+          font-size: 0.5rem;
+      }
+
+      .buttons {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+      }
+
+      .playpause-track,
+      .prev-track,
+      .next-track {
+          padding: 10px;
+          opacity: 0.8;
+          /* Smoothly transition the opacity */
+          transition: opacity .2s;
+          color:#42E4CE;
+      }
+
+      /* Change the opacity when mouse is hovered */
+      .playpause-track:hover,
+      .prev-track:hover,
+      .next-track:hover {
+          opacity: 1.0;
+      }
+
+      /* Define the slider width so that it scales properly */
+      .slider_container {
+          width: 75%;
+          max-width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      /* Modify the appearance of the slider */
+      .seek_slider {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          height: 5px;
+          background: black;
+          opacity: 0.7;
+          -webkit-transition: .2s;
+          transition: opacity .2s;
+      }
+
+      /* Modify the appearance of the slider thumb */
+      .seek_slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          background: white;
+          cursor: pointer;
+          border-radius: 50%;
+      }
+
+      /* Change the opacity when mouse is hovered */
+      .seek_slider:hover {
+          opacity: 1.0;
+      }
+
+      .seek_slider {
+          width: 100%;
+      }
+
+      i.fa-volume-down,
+      i.fa-volume-up {
+          padding: 5px;
+      }
+
+      /* Change the mouse cursor to a pointer
+ when hovered over */
+      i.fa-play-circle,
+      i.fa-pause-circle,
+      i.fa-step-forward,
+      i.fa-step-backward {
+          cursor: pointer;
+      }

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head'); %>
+</head>
+
+<body>
+    <section class="wrapper">
+        <%- include('./partials/menu'); %>
+        <section class="content-wrapper">
+            <header>
+                <div>
+                    <h1>BOOKMARKS</h1>
+                </div>
+                <div>
+                    <button class="modal-open secondary3" data-id="resource-modal"><span>+</span> Add Resource</button>
+                    <button class="modal-open secondary3" data-id="group-modal"><span>+</span> Add Group</button>
+                </div>
+            </header>
+
+            <section class="content resources">
+                <% groups.forEach(function(group) { %>
+                    <div class="group-cards secondary5">
+                        <div class="group-header">
+                            <h2><%= group.name %></h2>
+                            <div class="resource-links" onclick="openAllInNewTab(this)"><i class="fa fa-regular fa-link"></i></div>
+                        </div>
+                        <div class="resources-cards-container">
+                            <% let links=[]; %>
+                            <% resources.forEach(function(resource) { %>
+                                <% if(group._id.toString() == resource.group.toString()){ %>
+                                    <% links.push(resource.url) %>
+                                    <div class="resources-cards primary2" >
+                                        <!-- Storing Data for Edit -->
+                                        <div onclick="edit(this)">
+                                            <input type="hidden" style="display: none;" id="editId" value="<%= resource._id %>"></input>
+                                            <input type="hidden" style="display: none;" id="editTitle" value="<%= resource.title %>"></input>
+                                            <input type="hidden" style="display: none;" id="editContent" value="<%= resource.content %>"></input>
+                                            <input type="hidden" style="display: none;" id="editUrl" value="<%= resource.url %>"></input>
+                                            <input type="hidden" style="display: none;" id="editGroup" value="<%= resource.group %>"></input>
+                                            <h3><%= resource.title %></h3>
+                                            <div class="resource-content">
+                                                <%= resource.content %>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="resource-url" onclick="openInNewTab(this)">
+                                            <div><i class="fa fa-regular fa-bookmark"></i></div>
+                                            <div><%= resource.url %></div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            <% }); %>
+                        </div>
+                        <input type="hidden" id="links" value="<%= links %>">
+                    </div>
+                  <% }); %>
+            </section>
+        </section>
+    </section>
+
+
+    <!-- Resource Modal -->
+    <div id="resource-modal" class="modal" role="dialog" tabindex="-1">
+        <div class="model-inner">
+            <div class="modal-header">
+                <h3>Add resources</h3>
+                <button class="modal-close" data-id="resource-modal" aria-label="Close">
+                    &times;
+                </button>
+            </div>
+            <form method="post" action="/resource">
+                <div class='form-control'>
+                    <label for="title">Title</label>
+                    <input id='title' placeholder="Title" type='text' name="title" required>
+                </div>
+                <div class='form-control'>
+                    <label for="group">Group</label>
+                    <select id='group' name="group">
+                        <option value="">
+                            --Choose--
+                        </option>
+                        <% groups.forEach(function(detail){ %>
+                            <option value="<%= detail._id %>"><%= detail.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class='form-control'>
+                    <label for="content">Content</label>
+                    <textarea id="content"  name="content" required></textarea>
+                </div>
+                <div class='form-control'>
+                    <label for="url">URL</label>
+                    <input id='url' placeholder="Url" type='text' name="url" required>
+                </div>
+                <div class="form-control form-button">
+                    <button type="button"  id="modal-close" data-id="resource-modal" aria-label="Close">
+                        Cancel
+                    </button> 
+                    <button type="submit" class="secondary3">
+                        Save
+                    </button>    
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="modal" role="dialog" tabindex="-1">
+        <div class="model-inner">
+            <div class="modal-header">
+                <h3>Add resources</h3>
+                <button class="modal-close" data-id="edit-modal" aria-label="Close">
+                    &times;
+                </button>
+            </div>
+            <form method="post" action="/edit-resource">
+                <div class='form-control'>
+                    <label for="title">Title</label>
+                    <input id='title' placeholder="Title" type='text' name="title" required>
+                </div>
+                <div class='form-control'>
+                    <label for="group">Group</label>
+                    <select id='group' name="group">
+                        <option value="">
+                            --Choose--
+                        </option>
+                        <% groups.forEach(function(detail){ %>
+                            <option value="<%= detail._id %>"><%= detail.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class='form-control'>
+                    <label for="content">Content</label>
+                    <textarea id="content"  name="content" required></textarea>
+                </div>
+                <div class='form-control'>
+                    <label for="url">URL</label>
+                    <input id='url' placeholder="Url" type='text' name="url" required>
+                    <input id="id" type="hidden" name="id">
+                </div>
+                <div class="form-control form-button">
+                    <button type="button"  id="modal-close" data-id="edit-modal" aria-label="Close">
+                        Cancel
+                    </button> 
+                    <button type="submit" class="secondary3">
+                        Save
+                    </button>    
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Group Modal -->
+    <div id="group-modal" class="modal" role="dialog" tabindex="-1">
+        <div class="model-inner">
+            <div class="modal-header">
+                <h3>Add Group</h3>
+                <button class="modal-close" data-id="group-modal" aria-label="Close">
+                    &times;
+                </button>
+            </div>
+            <form method="post" action="/group">
+                <div class='form-control'>
+                    <label for="groupName">Group Name</label>
+                    <input id='groupName' placeholder="Group Name" type='text' name="group">
+                </div>
+                <div class="form-control form-button">
+                    <button type="button" id="modal-close" data-id="group-modal" aria-label="Close">
+                        Cancel
+                    </button> 
+                    <button type="submit" class="secondary3">
+                        Save
+                    </button>    
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        //Open Modal
+        let modal;
+        document.addEventListener("click", (e) => {
+            if (e.target.className === "modal-open secondary3") {
+                modal = document.getElementById(e.target.dataset.id);
+                openModal(modal);
+            } else if (e.target.className === "modal-close") {
+                closeModal(modal);
+            }else if(e.target.id === "modal-close"){
+                closeModal(modal);
+            } else {
+                return;
+            }
+        });
+
+        const openModal = (modal) => {
+            document.body.style.overflow = "hidden";
+            modal.setAttribute("open", "true");
+            document.addEventListener("keydown", escClose);
+            let overlay = document.createElement("div");
+            overlay.id = "modal-overlay";
+            document.body.appendChild(overlay);
+        };
+
+
+        //Close Modal
+        const closeModal = (modal) => {
+            document.body.style.overflow = "auto";
+            modal.removeAttribute("open");
+            document.removeEventListener("keydown", escClose);
+            document.body.removeChild(document.getElementById("modal-overlay"));
+        };
+
+        //Close Modal using keyboard
+        const escClose = (e) => {
+            if (e.keyCode == 27) {
+                closeModal();
+            }
+        };
+
+        function edit(e){
+            let title = $("#edit-modal #title");
+            let content = $("#edit-modal #content");
+            let url = $("#edit-modal #url");
+            let group = $("#edit-modal #group");
+            let id = $("#edit-modal #id");
+
+            $(e).children("input").each(function(key,value){
+                if(key==0)id.val($(value).val());
+                else if(key==1)title.val($(value).val());
+                else if(key==2)content.val($(value).val());
+                else if(key==3)url.val($(value).val());
+                else if(key==4)group.val($(value).val());
+            });
+            
+            modal = document.getElementById("edit-modal");
+            openModal(modal);
+
+        }
+        
+        function openInNewTab(e) {
+            let url = $(e).children()[1].innerHTML;
+            window.open(url, '_blank').focus();
+        }
+
+        function openAllInNewTab(e) {
+            let allLinks=$($(e).parent().siblings()[1]).val().split(",");
+            console.log(allLinks);
+            allLinks.forEach(url=>{
+                let link     = document.createElement('a');
+                link.href    = url;
+                link.target  = '_blank';
+                link.click();
+            });
+        }
+
+
+    </script>
+</body>
+
+</html>
