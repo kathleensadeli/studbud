@@ -59,10 +59,13 @@
     justify-content: flex-start;
     align-items: center;
     padding-top: 1vh;
+    position: relative;
   }
   .mobile-add {
     display: block;
-    margin-left: 15vw;
+    margin-right: 5vw;
+    position: absolute;
+    right: 0;
   }
 
   #close-mobile{
@@ -86,7 +89,7 @@
     scrollbar-width: none;
   }
   .column-cards {
-    width: 75vw;
+    width: 90vw;
     height: 50%;
     scrollbar-width: none;
     margin:0px 15px;

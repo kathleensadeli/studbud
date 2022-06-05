@@ -34,8 +34,15 @@
     <script>
         function selectCurrentSong(index){
             songIndex=index-1;
-            loadSong(trackList[songIndex]);
-            playSong();
+            let width = screen.width;
+            if(width<=450){
+                loadSongMobile(trackList[songIndex]);
+                playSongMobile();
+            }else{
+                loadSong(trackList[songIndex]);
+                playSong();
+            }
+            
         }
     </script>
 </body>
