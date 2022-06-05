@@ -26,7 +26,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 //connection to db
 mongoose.connect(process.env.DB_CONNECT).then(()=>{
-    app.listen(3000, () => console.log("Server Up and running"));
+    app.listen(8888, () => console.log("Server Up and running"));
 });
 
 

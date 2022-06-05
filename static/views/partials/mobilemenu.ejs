@@ -1,9 +1,26 @@
-<div class="mobile-nav hide">
+<div class="mobile-nav hide primary1">
     <ul>
-      <li><a href="">about</a></li>
-      <li><a href="">menu</a></li>
-      <li><a href="">faqs</a></li>
-      <li><a href="">contact</a></li>
+        <li class="bold">
+            <div>CONTENT</div>
+        </li>
+        <li class="<%= title=='Task List' ? 'menu-active' : '' %>">
+            <a href="/" class="menu-activesewew">Task List</a>
+        </li>
+        <li class="<%= title=='Bookmark' ? 'menu-active' : '' %>">
+            <a href="/bookmarks">Bookmarks</a>
+        </li>
+    </ul>
+    <br>
+    <ul>
+        <lI class="bold">
+            <div>ACCESSORIES</div>
+        </lI>
+        <li class="<%= title=='Clock' ? 'menu-active' : '' %>">
+            <a href="/clock">Clock</a>
+        </li>
+        <li class="<%= title=='Music' ? 'menu-active' : '' %>">
+            <a href="/music">Music</a>
+        </li>
     </ul>
 </div>
 
@@ -11,8 +28,14 @@
     
 	$('#menu-bar').on('click', function() {
 		console.log("test");
-    var mobileNav = $('.mobile-nav');
-    mobileNav.toggleClass('hide show');
+        var mobileNav = $('.mobile-nav');
+        mobileNav.toggleClass('hide show');
+	});
+
+    $('#close-mobile').on('click', function() {
+		console.log("test");
+        var mobileNav = $('.mobile-nav');
+        mobileNav.toggleClass('hide show');
 	});
 
 </script>
