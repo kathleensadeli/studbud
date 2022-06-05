@@ -24,6 +24,7 @@
             </header>
 
             <section class="content resources">
+                <!-- Looping Groups From Parameter Send in Server.js -->
                 <% groups.forEach(function(group) { %>
                     <div class="group-cards secondary5">
                         <div class="group-header" onclick="editGroup(this)">
@@ -63,6 +64,7 @@
                   <% }); %>
                   
             </section>
+            <!-- Include partials from EJS Mobile Playlist and menu -->
             <%- include('./partials/mobileplaylist'); %>
             <%- include('./partials/mobilemenu'); %>
         </section>
@@ -229,6 +231,7 @@
             }
         });
 
+        //function to open modal
         const openModal = (modal) => {
             document.body.style.overflow = "hidden";
             modal.setAttribute("open", "true");
@@ -274,11 +277,13 @@
 
         }
         
+        //function to open link in one of the resource
         function openInNewTab(e) {
             let url = $(e).children()[1].innerHTML;
             window.open(url, '_blank').focus();
         }
 
+        //function to open all link in new tab
         function openAllInNewTab(e) {
             let allLinks=$($(e).parent().siblings()[1]).val().split(",");
             allLinks.forEach(url=>{
@@ -289,6 +294,7 @@
             });
         }
 
+        //function to edit group showing popup group
         function editGroup(e){
             let group = $("#edit-group #group");
             let id = $("#edit-group #id");

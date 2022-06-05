@@ -17,6 +17,7 @@
             </header>
 
             <section class="content music">
+                <!-- Looping track list to make track card for song -->
                 <% trackList.forEach(function(track) { %>
                 <div class="music-cards" onclick="selectCurrentSong('<%= track.id %>')">
                     <img src="<%= track.image %>" >
@@ -26,12 +27,15 @@
                 </div>
                 <% }) %>
             </section>
+            <!-- Include partials from EJS Mobile Playlist and menu -->
             <%- include('./partials/mobileplaylist'); %>
             <%- include('./partials/mobilemenu'); %>
         </section>
     </section>
 
     <script>
+
+        //Function to play current song on click
         function selectCurrentSong(index){
             songIndex=index-1;
             let width = screen.width;

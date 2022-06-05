@@ -24,6 +24,7 @@
             </header>
             
             <section class="content task">
+                <!-- Looping Progress From Parameter Send in Server.js -->
                 <% progresses.forEach(function(progress) { %>
                     <% var count=0 %>
                     <% todoTasks.forEach(function(todo) { %>
@@ -79,6 +80,7 @@
                     </div>
                   <% }); %>
             </section>
+            <!-- Include partials from EJS Mobile Playlist and menu -->
             <%- include('./partials/mobileplaylist'); %>
             <%- include('./partials/mobilemenu'); %>
         </section>
