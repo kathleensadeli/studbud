@@ -157,11 +157,9 @@
       font-size: 15px;
   }
   .clock{
-      transform: translateY(-15vh);
       width: 100vw;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
   }
   .pomodoro-nav ul {
@@ -173,6 +171,17 @@
   }
   
 
+  /* Music Page */
+  .music-cards{
+      width: 130px;
+      height: 170px;
+      margin-left: 20px;
+      flex-wrap: wrap;
+  }
+  .music-cards img {
+    width: 120px;
+    height: 120px;
+  }
 }
 
 
