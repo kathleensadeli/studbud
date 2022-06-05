@@ -12,8 +12,8 @@ const todoTaskSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  column: {
-    type: mongoose.Schema.Types.ObjectId, ref:'Column'
+  progress: {
+    type: mongoose.Schema.Types.ObjectId, ref:'Progress'
   },
   priority: {
     type: String,

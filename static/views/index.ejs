@@ -10,38 +10,43 @@
         <%- include('./partials/menu'); %>
         <section class="content-wrapper">
             <header>
+                <div class="menu-bar" id="menu-bar"><i class="fa-solid fa-bars fa-2x"></i></div>
                 <div>
                     <h1>TASK LIST</h1>
                 </div>
-                <div>
+                <div class="add">
                     <button class="modal-open secondary3" data-id="task-modal"><span>+</span> Add Task</button>
-                    <button class="modal-open secondary3" data-id="column-modal"><span>+</span> Add Column</button>
+                    <button class="modal-open secondary3" data-id="progress-modal"><span>+</span> Add Progress</button>
+                </div>
+                <div class="mobile-add">
+                    <button class="modal-open secondary3" data-id="task-modal">+</button>
                 </div>
             </header>
-
+            
             <section class="content task">
-                <% columns.forEach(function(column) { %>
+                <% progresses.forEach(function(progress) { %>
                     <% var count=0 %>
                     <% todoTasks.forEach(function(todo) { %>
-                        <% if(column._id.toString() == todo.column.toString()){ %>
+                        <% if(progress._id.toString() == todo.progress.toString()){ %>
                             <% count++ %>
                         <% } %>
                     <% }); %>
                     <div class="column-cards secondary5">
-                        <div class="column-header">
-                            <h2><%= column.name %></h2>
+                        <div class="column-header" onclick="editProgress(this)">
+                            <h2><%= progress.name %></h2>
                             <div class="column-count secondary2 bold"><%= count %></div>
+                            <input type="hidden" value="<%= progress._id %>">
                         </div>
                         <% todoTasks.forEach(function(todo) { %>
-                            <% if(column._id.toString() == todo.column.toString()){ %>
+                            <% if(progress._id.toString() == todo.progress.toString()){ %>
                                 <div class="task-cards primary2" onclick="edit(this)">
                                     <!-- Storing Data for Edit -->
                                     <input type="hidden" style="display: none;" id="editId" value="<%= todo._id %>"></input>
                                     <input type="hidden" style="display: none;" id="editTask" value="<%= todo.task %>"></input>
                                     <input type="hidden" style="display: none;" id="editPriority" value="<%= todo.priority %>"></input>
                                     <input type="calendar" style="display: none;" id="editDueDate" value="<%= todo.dueDate %>"></input>
-                                    <input type="text" style="display: none;" id="estimatedTime" value="<%= todo.estimatedTime %>"></input>
-                                    <input type="hidden" style="display: none;" id="editColumn" value="<%= todo.column %>"></input>
+                                    <input type="hidden" style="display: none;" id="estimatedTime" value="<%= todo.estimatedTime %>"></input>
+                                    <input type="hidden"  id="editProgress" value="<%= todo.progress %>"></input>
                                     <h3><%= todo.task %></h3>
                                     <% if(todo.priority=="HIGH"){ %>
                                         <div class="priority bold priority-high"><%= todo.priority %></div>    
@@ -74,6 +79,8 @@
                     </div>
                   <% }); %>
             </section>
+            <%- include('./partials/mobileplaylist'); %>
+            <%- include('./partials/mobilemenu'); %>
         </section>
     </section>
 
@@ -93,12 +100,12 @@
                     <input id='taskName' placeholder="Task Name" type='text' name="task" required>
                 </div>
                 <div class='form-control'>
-                    <label for="column">Column</label>
-                    <select id='column' name="column">
+                    <label for="progress">Progress</label>
+                    <select id='progress' name="progress">
                         <option value="">
                             --Choose--
                         </option>
-                        <% columns.forEach(function(detail){ %>
+                        <% progresses.forEach(function(detail){ %>
                             <option value="<%= detail._id %>"><%= detail.name %></option>
                         <% }); %>
                     </select>
@@ -152,12 +159,12 @@
                     <input id='taskName' placeholder="Task Name" type='text' name="task" required>
                 </div>
                 <div class='form-control'>
-                    <label for="column">Column</label>
-                    <select id='column' name="column">
+                    <label for="progress">Column</label>
+                    <select id='progress' name="progress">
                         <option value="">
                             --Choose--
                         </option>
-                        <% columns.forEach(function(detail){ %>
+                        <% progresses.forEach(function(detail){ %>
                             <option value="<%= detail._id %>"><%= detail.name %></option>
                         <% }); %>
                     </select>
@@ -197,22 +204,22 @@
         </div>
     </div>
 
-    <!-- Column Modal -->
-    <div id="column-modal" class="modal" role="dialog" tabindex="-1">
+    <!-- Progress Modal -->
+    <div id="progress-modal" class="modal" role="dialog" tabindex="-1">
         <div class="model-inner">
             <div class="modal-header">
-                <h3>Add Column</h3>
-                <button class="modal-close" data-id="column-modal" aria-label="Close">
+                <h3>Add Progress</h3>
+                <button class="modal-close" data-id="progress-modal" aria-label="Close">
                     &times;
                 </button>
             </div>
-            <form method="post" action="/column">
+            <form method="post" action="/progress">
                 <div class='form-control'>
-                    <label for="columnName">Column Name</label>
-                    <input id='columnName' placeholder="Column Name" type='text' name="column">
+                    <label for="progress">Progress Name</label>
+                    <input id='progress' placeholder="Progress Name" type='text' name="progress">
                 </div>
                 <div class="form-control form-button">
-                    <button type="button" id="modal-close" data-id="column-modal" aria-label="Close">
+                    <button type="button" id="modal-close" data-id="progress-modal" aria-label="Close">
                         Cancel
                     </button> 
                     <button type="submit" class="secondary3">
@@ -222,6 +229,34 @@
             </form>
         </div>
     </div>
+
+    <!-- Edit Progress -->
+    <div id="edit-progress" class="modal" role="dialog" tabindex="-1">
+        <div class="model-inner">
+            <div class="modal-header">
+                <h3>Edit Progress</h3>
+                <button class="modal-close" data-id="edit-progress" aria-label="Close">
+                    &times;
+                </button>
+            </div>
+            <form method="post" action="/edit-progress">
+                <div class='form-control'>
+                    <label for="progress">Progress Name</label>
+                    <input id='progress' placeholder="Progress Name" type='text' name="progress">
+                    <input id="id" type="hidden" name="id">
+                </div>
+                <div class="form-control form-button">
+                    <button type="button" id="modal-close" data-id="edit-progress" aria-label="Close">
+                        Cancel
+                    </button> 
+                    <button type="submit" class="secondary3">
+                        Save
+                    </button>    
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <script>
         //Open Modal
@@ -266,7 +301,7 @@
 
         function edit(e){
             let task = $("#edit-modal #taskName");
-            let column = $("#edit-modal #column");
+            let progress = $("#edit-modal #progress");
             let dueDate = $("#edit-modal #dueDate");
             let hour = $("#edit-modal #hour");
             let minute = $("#edit-modal #minute");
@@ -291,10 +326,25 @@
                     hour.val(time[0]);
                     minute.val(time[1]);
                 }
-                else if(key==5) column.val($(value).val());
+                else if(key==5) progress.val($(value).val());
             });
             
             modal = document.getElementById("edit-modal");
+            openModal(modal);
+
+        }
+
+        function editProgress(e){
+            let progress = $("#edit-progress #progress");
+            let id = $("#edit-progress #id");
+
+
+            $(e).children().each(function(key,value){
+                if(key==0) progress.val($(value).html());
+                if(key==2) id.val($(value).val());
+            });
+
+            modal = document.getElementById("edit-progress");
             openModal(modal);
 
         }

@@ -1,144 +1,180 @@
 @import url("https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&family=Open+Sans:wght@700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   font-family: "Heebo", "Open Sans", "sans-serif";
-  background: #EEEBE5;
+  background: #eeebe5;
 }
 
-.bold{
+.bold {
   font-weight: 700;
 }
 
-.black{
+.black {
   font-weight: 900;
 }
 
-
 /* Color  */
-.primary1{
-    background-color: #957878;
+.primary1 {
+  background-color: #957878;
 }
-.primary2{
-  background-color: #EEEBE5;
+
+.primary2 {
+  background-color: #eeebe5;
 }
-.secondary1{
-  background-color: #FFC200;
+
+.secondary1 {
+  background-color: #ffc200;
 }
-.secondary2{
-  background-color: #B1AFE9;
+
+.secondary2 {
+  background-color: #b1afe9;
 }
-.secondary3{
-  background-color: #CEF9C6;
+
+.secondary3 {
+  background-color: #cef9c6;
 }
-.secondary4{
-  background-color: #42E4CE;
+
+.secondary4 {
+  background-color: #42e4ce;
 }
-.secondary5{
-  background-color: #FFFFFF;
+
+.secondary5 {
+  background-color: #ffffff;
 }
-.underline{
+
+.underline {
   border-bottom: 3px solid #000;
   padding-bottom: 3px;
 }
 
 /* Page */
-.wrapper{
-    display: flex;
-    height: 100vh;
+.wrapper {
+  display: flex;
+  height: 100vh;
 }
 
 /* Menu Style */
-.menu{
-    height: 100%;
-    width: 20vw;
-    font-size: 25px;
-    padding-top: 5vh;
-    box-shadow: 1px 1px 3px #000;
-    z-index: 1000;
-}
-.menu ul{
-  list-style: none;
-  padding-left: 2vw;
-  color:black;
+.menu {
+  height: 100%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 20vw;
+  font-size: 25px;
+  padding-top: 5vh;
+  box-shadow: 1px 1px 3px #000;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.menu ul li a{
+.menu-bar{
+  display: none;
+  font-size: 15px;
+
+}
+
+.menu-active {
+  background-color: rgba(202, 202, 208, 0.5);
+}
+
+.menu ul {
+  list-style: none;
+
+  box-sizing: border-box;
+  /* padding-left: 2vw; */
+  width: 100%;
+  color: black;
+}
+
+.menu ul li div {
+  padding-left: 2vw;
+}
+
+.menu ul li a {
   text-decoration: none;
   color: white;
   font-size: 20px;
   font-weight: 700;
+  padding-left: 2vw;
 }
-.menu ul li{
-  margin: 5px;
+
+.menu ul li {
+  padding: 5px;
 }
 
 /* Content */
-.content-wrapper{
-    height: 100vh;
-    width: 100%;
+.content-wrapper {
+  height: 100vh;
 }
 
-h1{
-    font-weight: 900;
-    font-size: 4em;
-    margin-left: 1em;
+h1 {
+  font-weight: 900;
+  font-size: 4em;
+  margin-left: 1em;
 }
-button{
-    border-radius: 5px;
-    box-sizing: border-box;
-    text-align: center;
-    padding: 1rem 2rem; 
-    border: 0;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    box-shadow: 2px 2px 2px #ccc;
-    align-items: center; 
+
+button {
+  border-radius: 5px;
+  box-sizing: border-box;
+  text-align: center;
+  padding: 1rem 2rem;
+  border: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  box-shadow: 2px 2px 2px #ccc;
+  align-items: center;
 }
 
 button:active {
-    box-shadow: 0 1px #ccc;
-    transform: translateY(4px);
+  box-shadow: 0 1px #ccc;
+  transform: translateY(4px);
 }
 
-button span{
-    font-size: 15px;
-    box-sizing: border-box;
+button span {
+  font-size: 15px;
+  box-sizing: border-box;
 }
 
 /* Header */
-.content-wrapper header{
-    background-color: #FFFFFF;
-    height: 20vh;
-    display: flex;
-    justify-content: space-between;
-    box-sizing: border-box;
-    padding-top: 1.5em;
+.content-wrapper header {
+  background-color: #ffffff;
+  height: 20vh;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding-top: 1.5em;
 }
 
-.content{
+.content {
   text-align: center;
   transform: translateY(15vh);
+  width: 80vw;
 }
 
+.mobile-add{
+  display: none;
+}
 /* Task */
-.task{
+.task {
   transform: translateY(5vh);
-  height: 75vh;
-  width: 85vw;
   overflow-x: scroll;
   overflow-y: hidden;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  height: 75vh;
 }
 
-.column-cards{
+.column-cards {
   flex-grow: 0;
   flex-shrink: 0;
   width: 20vw;
@@ -146,29 +182,31 @@ button span{
   padding: 20px;
   display: block;
   height: 70vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   scrollbar-width: 1px;
+  border-radius: 5px;
 }
 
-.column-header{
+.column-header {
   display: flex;
   justify-content: space-between;
 }
 
-.column-count{
+.column-count {
   border-radius: 50%;
   width: 32px;
   height: 32px;
 }
 
-.column-count::before{
-  content:'';
-  display:inline-block;
-  height:100%;
-  vertical-align:middle;
-  width:0px;
+.column-count::before {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width: 0px;
 }
-.task-cards{
+
+.task-cards {
   border-radius: 5px;
   margin: 10px 0;
   box-sizing: border-box;
@@ -179,43 +217,44 @@ button span{
   position: relative;
 }
 
-.priority{
+.priority {
   font-size: 0.8em;
   display: inline-block;
   padding: 0px 10px;
   border-radius: 5px;
 }
 
-.priority-high{
-  color:#EE3333;
-  background-color: #F5DFDD;
+.priority-high {
+  color: #ee3333;
+  background-color: #f5dfdd;
 }
 
-.priority-medium{
-  color:#EE751D;
-  background-color: #FFF1E2;
+.priority-medium {
+  color: #ee751d;
+  background-color: #fff1e2;
 }
 
-.priority-low{
-  color: #FFE695;
-  background-color: #FFF8DD;
+.priority-low {
+  color: #ffe695;
+  background-color: #fff8dd;
 }
 
-.estimated-time{
+.estimated-time {
   position: absolute;
   display: flex;
   justify-content: right;
   color: #888;
   font-size: 0.8rem;
-  bottom:0;
-  right:0;
+  bottom: 0;
+  right: 0;
   margin: 5px;
   width: 100%;
 }
 
-.estimated-time div{
+.estimated-time div {
   margin-left: 10px;
 }
+
 /* Modal */
 .modal {
   display: none;
@@ -227,7 +266,7 @@ button span{
   height: 100%;
 }
 
-.modal-open{
+.modal-open {
   border-radius: 50px;
   padding: 1em 2em;
   font-weight: 700;
@@ -241,6 +280,7 @@ button span{
   transform: translate(-50%, -50%);
   width: 50%;
 }
+
 .model-inner {
   background-color: white;
   border-radius: 0.5em;
@@ -250,15 +290,17 @@ button span{
   margin: auto;
 }
 
-.model-inner button{
+.model-inner button {
   font-weight: 700;
 }
+
 .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 2px solid black;
 }
+
 #modal-overlay {
   width: 100%;
   height: 100%;
@@ -277,56 +319,66 @@ form {
   flex-direction: column;
   margin: 10px 0;
 }
+
 .form-control {
   display: flex;
   flex-direction: column;
   margin: 10px 0;
 }
+
 form input,
-select, textarea {
+select,
+textarea {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   height: 38px;
   line-height: 38px;
   padding-left: 5px;
 }
+
 form label {
   color: rgba(0, 0, 0, 0.8);
   margin-bottom: 5px;
 }
-.form-control input[type="radio"]:checked + label {
-  background: #42E4CE;
+
+.form-control input[type="radio"]:checked+label {
+  background: #42e4ce;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 3px 3px 3px #ccc;
 }
+
 .form-control input[type="radio"] {
   display: none;
 }
 
-.time{
-    display: flex;
-}
-.form-control input[type="number"] {
-    width: 50%;
+.time {
+  display: flex;
 }
 
-.radio{ 
-  background-color: #EEEBE5;
+.form-control input[type="number"] {
+  width: 50%;
+}
+
+.radio {
+  background-color: #eeebe5;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 3px;
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
-.form-button{ 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
+
+.form-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
-.form-button button:first-child{ 
-    background-color: #EEEBE5;
+
+.form-button button:first-child {
+  background-color: #eeebe5;
 }
+
 .form-control .radio label {
   background: transparent;
   border: 1px solid transparent;
@@ -341,31 +393,31 @@ form label {
   width: 80px;
 }
 
-.modal-close{
-    border: 0;
-    background-color: white;
-    font-size: 30px;
-    padding: 0px;
-    box-shadow: 0px 0px 0px 0px;
+.modal-close {
+  border: 0;
+  background-color: white;
+  font-size: 30px;
+  padding: 0px;
+  box-shadow: 0px 0px 0px 0px;
 }
-.modal-close:active{
-    box-shadow: 0px 0px 0px 0px;
-    transform: translateY(0px);
+
+.modal-close:active {
+  box-shadow: 0px 0px 0px 0px;
+  transform: translateY(0px);
 }
 
 /* BookMark Page Style */
-.resources{
+.resources {
   transform: translateY(5vh);
-  height: 75vh;
-  width: 85vw;
   overflow-x: hidden;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
+  height: 75vh;
 }
 
-.group-cards{
+.group-cards {
   flex-grow: 0;
   flex-shrink: 0;
   width: 98%;
@@ -378,14 +430,15 @@ form label {
   scrollbar-width: 1px;
 }
 
-.group-header{
-  display: flex;
-}
-.resources-cards-container{
+.group-header {
   display: flex;
 }
 
-.resources-cards{
+.resources-cards-container {
+  display: flex;
+}
+
+.resources-cards {
   flex-grow: 0;
   flex-shrink: 0;
   border-radius: 5px;
@@ -398,13 +451,13 @@ form label {
   position: relative;
 }
 
-.resource-content{
+.resource-content {
   padding: 10px 0px;
   color: #888;
   font-size: 0.8em;
 }
 
-.resource-url{
+.resource-url {
   display: flex;
   color: #888;
   font-size: 0.8rem;
@@ -412,46 +465,44 @@ form label {
   z-index: 10000;
   position: absolute;
   bottom: 0;
-  left:0;
+  left: 0;
   margin: 5px 10px;
 }
 
-.resource-links{
+.resource-links {
   padding: 5px 10px;
 }
 
-.resource-url div{
-  padding:0px 5px;
+.resource-url div {
+  padding: 0px 5px;
 }
-
 
 /* Clock Page Style */
 
-
-.clock > *{
-  font-size: 30px;
-}
-.clock button{
+.clock>* {
   font-size: 30px;
 }
 
+.clock button {
+  font-size: 30px;
+}
 
-.clock-controls{
+.clock-controls {
   display: flex;
   margin: 20px;
   justify-content: center;
 }
 
-.clock-controls *{
+.clock-controls * {
   margin: 0px 20px;
   line-height: 10px;
 }
 
-.config{
+.config {
   position: relative;
 }
 
-.clock-configs{
+.clock-configs {
   border-radius: 5px;
   position: absolute;
   z-index: 10000;
@@ -460,34 +511,32 @@ form label {
   margin-top: 10px;
 }
 
-
-.clock-configs > div{
+.clock-configs>div {
   display: flex;
-  padding: 10px 0px; 
+  padding: 10px 0px;
   border-bottom: 2px solid #888;
   width: 100%;
 }
 
-.clock-configs div:last-child{
+.clock-configs div:last-child {
   border-bottom: 0px;
 }
 
-
-.clock-configs .pomodoro-label{
+.clock-configs .pomodoro-label {
   flex-grow: 3;
   line-height: 38px;
 }
 
-.clock-configs .pomodoro-input{
+.clock-configs .pomodoro-input {
   display: flex;
   flex-grow: 1;
 }
 
-.clock-configs .pomodoro-input div{
+.clock-configs .pomodoro-input div {
   line-height: 38px;
 }
 
-.clock-configs input{
+.clock-configs input {
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 4px;
   height: 38px;
@@ -497,133 +546,182 @@ form label {
   text-align: center;
 }
 
-.pomodoro-nav ul{
+.pomodoro-nav ul {
   list-style: none;
 }
 
-.pomodoro-nav ul li{
+.pomodoro-nav ul li {
   display: inline;
-  padding:0px 0px;
-  margin:0px 20px;
+  padding: 0px 0px;
+  margin: 0px 20px;
 }
 
-.timerDisplay{
+.timerDisplay {
   font-size: 100px;
 }
 
+/* Music Page */
+.music {
+  transform: translateY(5vh);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 75vh;
+  padding-left: 10vw;
+  width: 100%;
+}
+
+.music-cards {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: 200px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+
+
+.music-cards img {
+  border-radius: 10px;
+  width: 150px;
+  height: 130px;
+}
+
+.music-track {
+  opacity: 0.8;
+}
+
+.music-artist {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
 
 /* Playlist Style */
-/* Using flex with the column direction to
-        align items in a vertical direction */
-        .player {
-          display: flex;
-          align-items: center;
-          flex-direction: column;
-          justify-content: center;
-          padding:15px 0px;
-      }
+.music-container {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  padding: 10px 20px;
+}
 
-      .details {
-          display: flex;
-          align-items: center;
-          flex-direction: row;
-          justify-content: center;
-          padding:15px 0px;
-      }
+.music-container img {
+  width: 100px;
+  height: 100px;
+}
 
-      .track-song{
-          display: flex;
-          flex-direction: column;
-      }
+.music-info{
+  margin: 20px 0px;
+}
 
-      .track-art {
-          width: 80%;
-          background-size: cover;
-          background-position: center;
-      }
 
-      /* Changing the font sizes to suitable ones */
-      .track-name {
-          font-size: 1rem;
-      }
+.song-detail{
+  margin-left: 20px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-      .track-artist {
-          font-size: 0.5rem;
-      }
 
-      .buttons {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-      }
 
-      .playpause-track,
-      .prev-track,
-      .next-track {
-          padding: 10px;
-          opacity: 0.8;
-          /* Smoothly transition the opacity */
-          transition: opacity .2s;
-          color:#42E4CE;
-      }
+.song-detail #title{
+  font-size: 1.5rem;
+}
+.song-detail #artist{
+  font-size: 1rem;
+}
 
-      /* Change the opacity when mouse is hovered */
-      .playpause-track:hover,
-      .prev-track:hover,
-      .next-track:hover {
-          opacity: 1.0;
-      }
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-      /* Define the slider width so that it scales properly */
-      .slider_container {
-          width: 75%;
-          max-width: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-      }
+.action-btn {
+  background-color: #fff;
+  color: #42e4ce;
+  font-size: 20px;
+  cursor: pointer;
+  border: 0px black solid;
+  padding:10px 20px;
+}
 
-      /* Modify the appearance of the slider */
-      .seek_slider {
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          appearance: none;
-          height: 5px;
-          background: black;
-          opacity: 0.7;
-          -webkit-transition: .2s;
-          transition: opacity .2s;
-      }
+.action-btn:focus {
+  outline: 0;
+}
 
-      /* Modify the appearance of the slider thumb */
-      .seek_slider::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          appearance: none;
-          background: white;
-          cursor: pointer;
-          border-radius: 50%;
-      }
+.music-info {
+  display: flex;
+}
 
-      /* Change the opacity when mouse is hovered */
-      .seek_slider:hover {
-          opacity: 1.0;
-      }
+.music-info h4 {
+  margin: 0;
+}
 
-      .seek_slider {
-          width: 100%;
-      }
+.progress-container {
+  background: #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 0;
+  height: 4px;
+  width: 100%;
+}
 
-      i.fa-volume-down,
-      i.fa-volume-up {
-          padding: 5px;
-      }
+.progress {
+  background-color: #42e4ce;
+  border-radius: 5px;
+  height: 100%;
+  width: 0%;
+  transition: width 0.1s linear;
+}
 
-      /* Change the mouse cursor to a pointer
- when hovered over */
-      i.fa-play-circle,
-      i.fa-pause-circle,
-      i.fa-step-forward,
-      i.fa-step-backward {
-          cursor: pointer;
-      }
+.mobile-music-container{
+  display: none;
+}
+
+
+
+.mobile-nav {
+  background: rgba(52, 73, 94, 0.9);
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  transition: 0.2s ease;
+  z-index: -100;
+  /*  transition: opacity .5s ease;
+  -moz-transition: opacity .5s ease;
+  -webkit-transition: opacity .5s ease;
+  transition:left .5s ease-in-out;*/
+}
+.mobile-nav ul {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  list-style: none;
+}
+
+.mobile-nav a {
+  text-align: center;
+  font-size: 4vw;
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity 0.9s ease-in-out;
+}
+
+.mobile-nav.show a {
+  text-align: center;
+  font-size: 4vw;
+  color: #ffffff;
+  transform: translateY(0%);
+  z-index: 100;
+  opacity: 1;
+}
+
+.mobile-nav a:hover {
+  color: #2980b9;
+}
