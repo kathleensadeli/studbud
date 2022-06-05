@@ -1,3 +1,3 @@
 # studbud
 
-![figure](FIGURE 1.jpg)
+![figure](./FIGURE 1.jpg)
