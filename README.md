@@ -11,11 +11,11 @@ Music → Users liked the simple layout of the song cards and found the large si
 
 I created a rough sketch of what the column/group should look like if the cards exceed their space. My initial design would have the column merely extended to fit the new cards added. Adding cards vertically to the task list was simple; every resource card will add up vertically, following every third horizontal card. 
 
-![Figure](https://github.com/kathleensadeli/studbud/blob/main/FIGURE%201.jpg)
+![Figure](https://github.com/kathleensadeli/studbud/blob/main/FIGURE%202.jpg)
 
 On self-reflection, having users scroll through many resource cards in one group to get to the next will be time-consuming. Therefore, it is better to implement a horizontal scroll bar to “hide” unnecessary cards for a more efficient display. Implementing a vertical line to the task list as well, I realized that it is helpful for users to still be able to see the progress label no matter how far they scroll down. 
 
-![Figure](https://github.com/kathleensadeli/studbud/blob/main/FIGURE%202.jpg)
+![Figure](https://github.com/kathleensadeli/studbud/blob/main/FIGURE%201.jpg)
 
 As I moved on to coding the application itself, I ensured I fulfilled user needs and feedback throughout the process. However, I did encounter some challenges with dynamic points that have impacted the several functionalities of the application. Tasks cannot be dragged and dropped as there were difficulties finding dynamic points for card relocation and changing its progress status, especially when there is a lot of data. Furthermore, the music player will be refreshed to the default song “bedtime after a coffee” every time the user clicks on a page. The dynamic nature of the song and the time elapsed makes it challenging to keep track of. This is the same reason why the clock is refreshed every time the user switches pages.
 
