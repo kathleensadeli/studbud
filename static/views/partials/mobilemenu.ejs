@@ -1,0 +1,18 @@
+<div class="mobile-nav hide">
+    <ul>
+      <li><a href="">about</a></li>
+      <li><a href="">menu</a></li>
+      <li><a href="">faqs</a></li>
+      <li><a href="">contact</a></li>
+    </ul>
+</div>
+
+<script>
+    
+	$('#menu-bar').on('click', function() {
+		console.log("test");
+    var mobileNav = $('.mobile-nav');
+    mobileNav.toggleClass('hide show');
+	});
+
+</script>

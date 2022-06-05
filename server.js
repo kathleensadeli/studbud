@@ -8,12 +8,13 @@ const jsmediatags = require("jsmediatags");
 
 
 const app = express();
-
 const TodoTask = require("./models/TodoTask");
-const Column = require("./models/Column");
+const Progress = require("./models/Progress");
 
 const Group = require("./models/Group");
 const Resource = require("./models/Resource");
+
+
 
 dotenv.config();
 app.use("/static",express.static('static'));
@@ -29,6 +30,98 @@ mongoose.connect(process.env.DB_CONNECT).then(()=>{
 });
 
 
+const trackList=[{
+    id:1,
+    name:"Indigo",
+    artist:"Niki",
+    image:"static/musics/images/niki1.png",
+    path:"static/musics/indigo.mp3"
+},{
+    id:2,
+    name:"Shivers",
+    artist:"Ed Sheeran",
+    image:"static/musics/images/edsheeran1.png",
+    path:"static/musics/shivers.mp3"
+},{
+    id:3,
+    name:"Leave Your Life",
+    artist:"Ed Sheeran",
+    image:"static/musics/images/edsheeran1.png",
+    path:"static/musics/leaveyourlife.mp3"
+},{
+    id:4,
+    name:"Stop The Rain",
+    artist:"Ed Sheeran",
+    image:"static/musics/images/edsheeran1.png",
+    path:"static/musics/stoptherain.mp3"
+},{
+    id:5,
+    name:"Perfect",
+    artist:"Ed Sheeran",
+    image:"static/musics/images/edsheeran2.png",
+    path:"static/musics/perfect.mp3"
+},{
+    id:6,
+    name:"Bad Habits",
+    artist:"Ed Sheeran",
+    image:"static/musics/images/edsheeran1.png",
+    path:"static/musics/badhabits.mp3"
+},{
+    id:7,
+    name:"Willow",
+    artist:"Taylor Swift",
+    image:"static/musics/images/taylor1.png",
+    path:"static/musics/willow.mp3"
+},{
+    id:8,
+    name:"Positions",
+    artist:"Arianna Grande",
+    image:"static/musics/images/arianna1.png",
+    path:"static/musics/positions.mp3"
+},{
+    id:9,
+    name:"Closure",
+    artist:"Taylor Swift",
+    image:"static/musics/images/taylor1.png",
+    path:"static/musics/closure.mp3"
+},{
+    id:10,
+    name:"Visiting Hours",
+    artist:"Ed Sheeran",
+    image:"static/musics/images/edsheeran1.png",
+    path:"static/musics/visitinghours.mp3"
+},{
+    id:11,
+    name:"Shape of You",
+    artist:"Ed Sheeran",
+    image:"static/musics/images/edsheeran2.png",
+    path:"static/musics/shapeofyou.mp3"
+},{
+    id:12,
+    name:"Gold Rush",
+    artist:"Taylor Swift",
+    image:"static/musics/images/taylor1.png",
+    path:"static/musics/goldrush.mp3"
+},{
+    id:13,
+    name:"Test Drive",
+    artist:"Arianna Grande",
+    image:"static/musics/images/arianna1.png",
+    path:"static/musics/testdrive.mp3"
+},{
+    id:14,
+    name:"Majorie",
+    artist:"Taylor Swift",
+    image:"static/musics/images/taylor1.png",
+    path:"static/musics/majorie.mp3"
+},{
+    id:15,
+    name:"Galway Girl",
+    artist:"Ed Sheeran",
+    image:"static/musics/images/edsheeran2.png",
+    path:"static/musics/galwaygirl.mp3"
+}];
+
 
 //Todo Routes
 //POST METHOD
@@ -37,7 +130,7 @@ app.post('/task',urlencodedParser,async (req, res) => {
         task: req.body.task,
         dueDate: req.body.dueDate,
         estimatedTime: parseInt(req.body.hour,0)+':'+parseInt(req.body.minute,0),
-        column: req.body.column,
+        progress: req.body.progress,
         priority: req.body.priority
     });
     try {
@@ -49,13 +142,13 @@ app.post('/task',urlencodedParser,async (req, res) => {
 });
 
 //TODO
-//POST COLUMN
-app.post('/column',urlencodedParser,async (req, res) => {
-    const column = new Column({
-        name: req.body.column
+//POST PROGRESS
+app.post('/progress',urlencodedParser,async (req, res) => {
+    const progress = new Progress({
+        name: req.body.progress
     });
     try {
-    await column.save();
+    await progress.save();
         res.redirect("/");
     } catch (err) {
         res.redirect("/");
@@ -65,12 +158,12 @@ app.post('/column',urlencodedParser,async (req, res) => {
 
 // GET METHOD
 app.get("/", (req, res) => {
-    Column.find({}, (err, columns) => {
+    Progress.find({}, (err, progresses) => {
         if(err){
             console.log(err);
         }else{
             TodoTask.find({}, (err, todoTasks)=>{
-                res.render("index.ejs", { columns : columns, todoTasks : todoTasks, title:"Task List"});
+                res.render("index.ejs", { progresses : progresses, todoTasks : todoTasks, title:"Task List", trackList:trackList});
             })
         } 
     });
@@ -81,7 +174,7 @@ app.post('/edit-task',urlencodedParser,async (req, res) => {
         task: req.body.task,
         dueDate: req.body.dueDate,
         estimatedTime: parseInt(req.body.hour,0)+':'+parseInt(req.body.minute,0),
-        column: req.body.column,
+        progress: req.body.progress,
         priority: req.body.priority
     },err=>{
         if(err)
@@ -91,6 +184,20 @@ app.post('/edit-task',urlencodedParser,async (req, res) => {
     });
 });
 
+//EDIT PROGRESS
+app.post('/edit-progress',urlencodedParser,async (req, res) => {
+    Progress.findByIdAndUpdate(req.body.id,{
+        name: req.body.progress
+    },err=>{
+        if(err)
+            console.log(err)
+        else
+            res.redirect("/");
+    });
+});
+
+
+
 
 //BOOKMARK ROUTES
 app.get("/bookmarks", (req, res) => {
@@ -99,7 +206,7 @@ app.get("/bookmarks", (req, res) => {
             console.log(err);
         }else{
             Resource.find({}, (err, resources)=>{
-                res.render("bookmark.ejs", { groups : groups, resources : resources, title:"Bookmark"});
+                res.render("bookmark.ejs", { groups : groups, resources : resources, title:"Bookmark", trackList:trackList});
             })
         } 
     });
@@ -137,7 +244,6 @@ app.post('/group',urlencodedParser,async (req, res) => {
 
 //EDIT RESOURCE
 app.post('/edit-resource',urlencodedParser,async (req, res) => {
-    console.log(req.body.id);
     Resource.findByIdAndUpdate(req.body.id,{
         title: req.body.title,
         content: req.body.content,
@@ -151,21 +257,36 @@ app.post('/edit-resource',urlencodedParser,async (req, res) => {
     });
 });
 
+//EDIT GROUP
+app.post('/edit-group',urlencodedParser,async (req, res) => {
+    Group.findByIdAndUpdate(req.body.id,{
+        name: req.body.group
+    },err=>{
+        if(err)
+            console.log(err)
+        else
+            res.redirect("/bookmarks");
+    });
+});
+
 //CLOCK ROUTES
 // GET METHOD
 app.get("/clock", (req, res) => {
-    res.render("clock.ejs", { title:"Clock"})
+    res.render("clock.ejs", { title:"Clock", trackList:trackList})
 });
 
 
 //MUSIC ROUTES
 // GET METHOD
 app.get("/music", (req, res) => {
-    loadPlaylist((err,callback)=>{
-        res.render("music.ejs",{data:callback, title:"Music"});
-    });       
+    res.render("music.ejs",{trackList:trackList, title:"Music"});      
 });
 
+app.get("/playlist", (req, res) => {
+    
+        res.render("playlist.ejs",{title:"Music"});
+           
+});
 
 
 

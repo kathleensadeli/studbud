@@ -1,0 +1,208 @@
+<div class="mobile-music-container">
+    <div class="music-container" id="music-container-mobile">
+        <div class="progress-container" id="progress-container-mobile">
+            <div class="progress" id="progress-mobile"></div>
+        </div>
+        <div class="mobile-music">
+            <div class="music-info">
+                <img src="static/musics/images/niki1.png" alt="music-cover" id="cover-mobile" />
+                <div class="song-detail">
+                  <div id="title-mobile" class="bold"></div>
+                  <div id="artist-mobile">Niki</div>
+                </div>
+              </div>
+              <audio src="static/musics/indigo.mp3" id="audio-mobile"></audio>
+              <div class="navigation">
+                <div id="prev-mobile" class="action-btn">
+                  <i class="fa-solid fa-backward-step fa-2x"></i>
+                </div>
+                <div id="play-mobile" class="action-btn">
+                  <i class="fa-solid fa-circle-play fa-2x"></i>
+                </div>
+                <div id="next-mobile" class="action-btn">
+                  <i class="fa-solid fa-forward-step fa-2x"></i>
+                </div>
+              </div>
+        </div>
+      </div>
+    
+</div>
+
+  
+<script>
+    
+    const musicContainerMobile = document.getElementById('music-container-mobile');
+    const playBtnMobile = document.getElementById('play-mobile');
+    const prevBtnMobile = document.getElementById('prev-mobile');
+    const nextBtnMobile = document.getElementById('next-mobile');
+    
+    const audioMobile = document.getElementById('audio-mobile');
+    const progressMobile = document.getElementById('progress-mobile');
+    const progressContainerMobile = document.getElementById('progress-container-mobile');
+    const titleMobile = document.getElementById('title-mobile');
+    const artistMobile = document.getElementById('artist-mobile');
+    const coverMobile = document.getElementById('cover-mobile');
+    
+    
+    // Initially load song details into DOM
+    loadSongMobile(trackList[songIndex]);
+    
+    // Update song details
+    function loadSongMobile(song) {
+      titleMobile.innerText = song.name;
+      artistMobile.innerText = song.artist;
+      audioMobile.src = song.path;
+      coverMobile.src = song.image;
+    }
+    
+    // Play song
+    function playSongMobile() {
+      musicContainerMobile.classList.add('play');
+      playBtnMobile.querySelector('i.fa-solid').classList.remove('fa-circle-play');
+      playBtnMobile.querySelector('i.fa-solid').classList.add('fa-circle-pause');
+      audioMobile.play();
+    }
+    
+    // Pause song
+    function pauseSongMobile() {
+      musicContainerMobile.classList.remove('play');
+      playBtnMobile.querySelector('i.fa-solid').classList.add('fa-circle-play');
+      playBtnMobile.querySelector('i.fa-solid').classList.remove('fa-circle-pause');
+    
+      audioMobile.pause();
+    }
+    
+    // Previous song
+    function prevSongMobile() {
+      songIndex--;
+    
+      if (songIndex < 0) {
+        songIndex = trackList.length - 1;
+      }
+    
+      loadSongMobile(trackList[songIndex]);
+    
+      playSongMobile();
+    }
+    
+    // Next song
+    function nextSongMobile() {
+      songIndex++;
+    
+      if (songIndex > trackList.length - 1) {
+        songIndex = 0;
+      }
+    
+      loadSongMobile(trackList[songIndex]);
+    
+      playSongMobile();
+    }
+    
+    // Update progress bar
+    function updateProgressMobile(e) {
+      const { duration, currentTime } = e.srcElement;
+      const progressPercent = (currentTime / duration) * 100;
+      progressMobile.style.width = `${progressPercent}%`;
+    }
+    
+    // Set progress bar
+    function setProgressMobile(e) {
+      const width = this.clientWidth;
+      const clickX = e.offsetX;
+      const duration = audioMobile.duration;
+    
+      audioMobile.currentTime = (clickX / width) * duration;
+    }
+    
+    //get duration & currentTime for Time of song
+    function DurTimeMobile (e) {
+        const {duration,currentTime} = e.srcElement;
+        var sec;
+        var sec_d;
+    
+        // define minutes currentTime
+        let min = (currentTime==null)? 0:
+         Math.floor(currentTime/60);
+         min = min <10 ? '0'+min:min;
+    
+        // define seconds currentTime
+        function get_secMobile (x) {
+            if(Math.floor(x) >= 60){
+                
+                for (var i = 1; i<=60; i++){
+                    if(Math.floor(x)>=(60*i) && Math.floor(x)<(60*(i+1))) {
+                        sec = Math.floor(x) - (60*i);
+                        sec = sec <10 ? '0'+sec:sec;
+                    }
+                }
+            }else{
+                 sec = Math.floor(x);
+                 sec = sec <10 ? '0'+sec:sec;
+             }
+        } 
+    
+        get_secMobile (currentTime,sec);
+    
+        // change currentTime DOM
+        // currTime.innerHTML = min +':'+ sec;
+    
+        // define minutes duration
+        let min_d = (isNaN(duration) === true)? '0':
+            Math.floor(duration/60);
+         min_d = min_d <10 ? '0'+min_d:min_d;
+    
+    
+         function get_sec_dMobile (x) {
+            if(Math.floor(x) >= 60){
+                
+                for (var i = 1; i<=60; i++){
+                    if(Math.floor(x)>=(60*i) && Math.floor(x)<(60*(i+1))) {
+                        sec_d = Math.floor(x) - (60*i);
+                        sec_d = sec_d <10 ? '0'+sec_d:sec_d;
+                    }
+                }
+            }else{
+                 sec_d = (isNaN(duration) === true)? '0':
+                 Math.floor(x);
+                 sec_d = sec_d <10 ? '0'+sec_d:sec_d;
+             }
+        } 
+    
+        // define seconds duration
+        
+        get_sec_dMobile (duration);
+    
+        // change duration DOM
+        // durTime.innerHTML = min_d +':'+ sec_d;
+            
+    };
+    
+    // Event listeners
+    playBtnMobile.addEventListener('click', () => {
+      const isPlaying = musicContainerMobile.classList.contains('play');
+    
+      if (isPlaying) {
+        pauseSongMobile();
+      } else {
+        playSongMobile();
+      }
+    });
+    
+    // Change song
+    prevBtnMobile.addEventListener('click', prevSongMobile);
+    nextBtnMobile.addEventListener('click', nextSongMobile);
+    
+    // Time/song update
+    audioMobile.addEventListener('timeupdate', updateProgressMobile);
+    
+    // Click on progress bar
+    progressContainerMobile.addEventListener('click', setProgressMobile);
+    
+    // Song ends
+    audioMobile.addEventListener('ended', nextSongMobile);
+    
+    // Time of song
+    audioMobile.addEventListener('timeupdate',DurTimeMobile);
+    
+    </script>
+    

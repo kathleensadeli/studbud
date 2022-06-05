@@ -22,9 +22,10 @@
             <section class="content resources">
                 <% groups.forEach(function(group) { %>
                     <div class="group-cards secondary5">
-                        <div class="group-header">
+                        <div class="group-header" onclick="editGroup(this)">
                             <h2><%= group.name %></h2>
-                            <div class="resource-links" onclick="openAllInNewTab(this)"><i class="fa fa-regular fa-link"></i></div>
+                            <div class="resource-links" onclick="openAllInNewTab(this)"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+                            <input type="hidden" value="<%= group._id %>">
                         </div>
                         <div class="resources-cards-container">
                             <% let links=[]; %>
@@ -178,6 +179,33 @@
         </div>
     </div>
 
+    <!-- Edit Group Modal -->
+    <div id="edit-group" class="modal" role="dialog" tabindex="-1">
+        <div class="model-inner">
+            <div class="modal-header">
+                <h3>Add Group</h3>
+                <button class="modal-close" data-id="edit-group" aria-label="Close">
+                    &times;
+                </button>
+            </div>
+            <form method="post" action="/edit-group">
+                <div class='form-control'>
+                    <label for="group">Group Name</label>
+                    <input id='group' placeholder="Group Name" type='text' name="group">
+                    <input id="id" type="hidden" name="id">
+                </div>
+                <div class="form-control form-button">
+                    <button type="button" id="modal-close" data-id="edit-group" aria-label="Close">
+                        Cancel
+                    </button> 
+                    <button type="submit" class="secondary3">
+                        Save
+                    </button>    
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         //Open Modal
         let modal;
@@ -246,13 +274,26 @@
 
         function openAllInNewTab(e) {
             let allLinks=$($(e).parent().siblings()[1]).val().split(",");
-            console.log(allLinks);
             allLinks.forEach(url=>{
                 let link     = document.createElement('a');
                 link.href    = url;
                 link.target  = '_blank';
                 link.click();
             });
+        }
+
+        function editGroup(e){
+            let group = $("#edit-group #group");
+            let id = $("#edit-group #id");
+
+            $(e).children().each(function(key,value){
+                if(key==0) group.val($(value).html());
+                if(key==2) id.val($(value).val());
+            });
+
+            modal = document.getElementById("edit-group");
+            openModal(modal);
+
         }
 
 

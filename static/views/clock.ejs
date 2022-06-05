@@ -2,11 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/stylesheets/style.css" type="text/css">
-    <title>Clock</title>
+    <%- include('./partials/head') %>
 </head>
 
 <body>
@@ -146,19 +142,7 @@
         });
 
         startTimer.addEventListener('click', () => {
-            if(buttonState=='start'){
-                if (int !== null) {
-                    clearInterval(int);
-                }
-                buttonState='stop';
-                startTimer.innerHTML="Stop"
-                int = setInterval(displayTimer, 1000);
-                
-            }else{
-                clearInterval(int);
-                buttonState='start';
-                startTimer.innerHTML="Start"
-            }
+            switchButtonState();
         });
 
         config.addEventListener('click', () => {
@@ -178,7 +162,6 @@
         });
 
         reset.addEventListener('click', () => {
-            console.log("reset");
             clearInterval(int);
             if(type=='timer'){
                 setDisplayTimer(pa.pomodoro,0);
@@ -195,6 +178,8 @@
                 seconds--; 
                 if(seconds==0||seconds<0){
                     if(minutes==0&&seconds==0&&currentState=="pomodoro"){
+                        clearInterval(int);
+                        switchButtonState();
                         if(pa.sessions==pa.longBreakInterval){
                             switchState("longBreak");
                             pa.sessions=0;
@@ -202,11 +187,18 @@
                             pa.sessions++;
                             switchState("shortBreak");
                         }
+                        seconds=0;
+                        
                     }else if(minutes==0&&seconds==0&&currentState!="pomodoro"){
+                        clearInterval(int);
+                        switchButtonState();
                         switchState("pomodoro");
+                        seconds=0;
+                    }else{
+                        seconds=59;
+                        minutes--;
                     }
-                    seconds=59;
-                    minutes--;
+                    
                 }
                 
             }else{
@@ -260,6 +252,22 @@
             pa.pomodoro=pomodoroInput.value;
             pa.shortBreak=shortBreakInput.value;
             pa.longBreak=longBreakInput.value;
+        }
+
+        function switchButtonState(){
+            if(buttonState=='start'){
+                if (int !== null) {
+                    clearInterval(int);
+                }
+                buttonState='stop';
+                startTimer.innerHTML="Stop"
+                int = setInterval(displayTimer, 1000);
+                
+            }else{
+                clearInterval(int);
+                buttonState='start';
+                startTimer.innerHTML="Start"
+            }
         }
 
 
