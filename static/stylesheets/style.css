@@ -152,6 +152,7 @@ button span {
   justify-content: space-between;
   box-sizing: border-box;
   padding-top: 1.5em;
+  position: relative;
 }
 
 .content {
@@ -685,43 +686,52 @@ form label {
 
 
 .mobile-nav {
-  background: rgba(52, 73, 94, 0.9);
+  font-size: 25px;
+  padding-top: 5vh;
+  box-shadow: 1px 1px 3px #000;
+  display: flex;
+  flex-direction: column;
   position: absolute;
   top: 0;
-  width: 100vw;
+  width: 80vw;
   height: 100vh;
   text-align: center;
   transition: 0.2s ease;
-  z-index: -100;
-  /*  transition: opacity .5s ease;
-  -moz-transition: opacity .5s ease;
-  -webkit-transition: opacity .5s ease;
-  transition:left .5s ease-in-out;*/
+  z-index: 1000;
+  transform: translateX(-100%);
 }
-.mobile-nav ul {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+.menu-active {
+  background-color: rgba(202, 202, 208, 0.5);
+}
+
+.menu ul {
   list-style: none;
+
+  box-sizing: border-box;
+  /* padding-left: 2vw; */
+  width: 100%;
+  color: black;
 }
 
-.mobile-nav a {
-  text-align: center;
-  font-size: 4vw;
-  color: #ffffff;
-  opacity: 0;
-  transition: opacity 0.9s ease-in-out;
+.mobile-nav ul li div {
+  padding-left: 2vw;
 }
 
-.mobile-nav.show a {
-  text-align: center;
-  font-size: 4vw;
-  color: #ffffff;
-  transform: translateY(0%);
-  z-index: 100;
-  opacity: 1;
+.mobile-nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  padding-left: 2vw;
 }
 
+.mobile-nav ul li {
+  padding: 5px;
+}
+
+.mobile-nav.show {
+  transform: translateX(0%);
+}
 .mobile-nav a:hover {
   color: #2980b9;
 }
